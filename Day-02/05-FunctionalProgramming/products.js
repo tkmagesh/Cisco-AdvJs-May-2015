@@ -104,22 +104,55 @@ display("Functional Programming", function(){
                }
                return result;
            }
+           var costlyProductCriteria = function(product){ return product.cost > 50; };
            display("Costly Products [cost > 50]", function(){
-                var costlyProductCriteria = function(product){ return product.cost > 50; };
                 var costlyProducts = filter(products, costlyProductCriteria);
                 console.table(costlyProducts);
             });
+           var category1Criteria = function(product){ return product.category === 1; };
            display("All categor-1 products", function(){
-               var category1Criteria = function(product){ return product.category === 1; };
                var allCategory1Products = filter(products, category1Criteria);
                console.table(allCategory1Products);
+           });
+          /* var affordableProductCriteria = function(product){
+               return !costlyProductCriteria(product);
+           };
+           var allButCategory1Criteria = function(product){
+               return !category1Criteria(product);
+           }*/
+
+           function negate(criteriaFn){
+               return function(){
+                   return !criteriaFn.apply(this,arguments);
+               }
+           }
+           var affordableProductCriteria = negate(costlyProductCriteria);
+           var allBut1CategoryCriteria = negate(category1Criteria);
+
+           display("Affordable produts [!costlyProduct]", function(){
+               var affordableProducts = filter(products, affordableProductCriteria);
+               console.table(affordableProducts);
+           });
+           display("All but category-1 products", function(){
+               var allButCategory1Products = filter(products, allBut1CategoryCriteria);
+               console.table(allButCategory1Products);
+           });
+
+           function andCriteria(criteria1Fn, criteria2Fn){
+               return function(/*arguments*/){
+                   return criteria1Fn.apply(this,arguments) && criteria2Fn.apply(this,arguments);
+               }
+           }
+           display("All category-1 costly products", function(){
+               var allCategory1CostlyProductCriteria = andCriteria(costlyProductCriteria, category1Criteria);
+               var allCategory1CostlyProducts = filter(products, allCategory1CostlyProductCriteria);
+               console.table(allCategory1CostlyProducts);
            });
        });
     });
 });
 /*
-sort
-filter
+
 min
 max
 sum

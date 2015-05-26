@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Salary Calculator</title>
+    <style>
+        label{
+            display: block;
+        }
+        .field{
+            margin-bottom: 10px;
+        }
+        #divResult{
+            color: red;
+            font-size: 28pt;
+            font-weight: bold;
+        }
+    </style>
+    <script src="Utils.js"></script>
+    <script src="angular.min.js"></script>
+    <script src="SalaryCalculator.js"></script>
+    <script>
+    var calculatorApp = angular.module("calculatorApp", []);
+    calculatorApp.run(function($rootScope){
+        $rootScope.calculator = new SalaryCalculator();
+    });
+    </script>
+    
+</head>
+<body ng-app="calculatorApp">
+    <h1>Salary Calculator</h1>
+    <hr>
+    <div class="content">
+        <div class="field"><label for="">Basic :</label><input type="text" ng-model="calculator.basic"></div>
+        <div class="field"><label for="">HRA :</label><input type="text" ng-model="calculator.hra"></div>
+        <div class="field"><label for="">DA :</label><input type="text" ng-model="calculator.da"></div>
+        <div class="field">
+            <label for="">Tax :</label>
+            <input type="range" name="" id="rangeTax" min="0" max="30" ng-model="calculator.tax">
+            <span id="spanTax" ng-bind="calculator.tax"></span>
+        </div>
+        <div class="field"><input type="button" value="Calculate" id="btnCalculate" ng-click="calculator.calculate()"></div>
+        <div class="field">
+            <div id="divResult" ng-bind="calculator.salary">[Salary]</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -238,6 +238,10 @@ display("Functional Programming", function(){
         }
         var sumOfUnits = aggregate(products, function(seed, product){ return seed + product.units; }, 0);
         console.log("Sum of units = ", sumOfUnits);
+        var maxOfCost = aggregate(products, function(seed, product){
+            return seed > product.cost? seed : product.cost; },
+        0);
+        console.log("Max of Cost = ", maxOfCost);
     });
 });
 /*

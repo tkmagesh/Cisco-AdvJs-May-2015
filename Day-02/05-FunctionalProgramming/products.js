@@ -150,6 +150,83 @@ display("Functional Programming", function(){
            });
        });
     });
+    display("CountBy", function(){
+        function countBy(list, predicate){
+            var result = 0;
+            for(var i=0; i<list.length;i++)
+                if (predicate(list[i])) ++result;
+            return result;
+        }
+        var totalCostlyProducts = countBy(products, function(product){ return product.cost > 50; });
+        console.log("Total number of costly products [cost > 50]", totalCostlyProducts);
+
+    });
+    display("all", function(){
+        function all(list, predicate){
+            for(var i=0; i<list.length;i++)
+                if (!predicate(list[i])) return false;
+            return true;
+        }
+        var areAllProductsCostly = all(products, function(product){ return product.cost > 50; });
+        console.log("Are all the product costly [cost > 50]?", areAllProductsCostly);
+    });
+    display("any", function(){
+        function all(list, predicate){
+            for(var i=0; i<list.length;i++)
+                if (predicate(list[i])) return true;
+            return false;
+        }
+        var atleast1CostlyProduct = all(products, function(product){ return product.cost > 50; });
+        console.log("Are there any costly products [cost > 50]?", atleast1CostlyProduct);
+    });
+
+    display("groupBy", function(){
+        function groupBy(list, keySelector){
+            var result = {};
+            for(var i=0; i<list.length; i++){
+                var key = keySelector(list[i]);
+                //result[key] = result[key] || [];
+                if (typeof result[key] === "undefined")
+                    result[key] = [];
+                result[key].push(list[i]);
+            }
+            return result;
+        }
+        display("Products By Category", function(){
+            var productsByCategory = groupBy(products , function(product){ return product.category; });
+            for(var key in productsByCategory){
+                display("Key -> " + key, function(){
+                    console.table(productsByCategory[key]);
+                });
+            }
+        });
+         display("Products By Cost", function(){
+            var productsByCost = groupBy(products , function(product){
+                return product.cost < 50 ? "affordable" : (product.cost > 70 ? "luxury" : "costly");
+            });
+            console.log(productsByCost);
+            for(var key in productsByCost){
+                display("Key -> " + key, function(){
+                    console.table(productsByCost[key]);
+                });
+            }
+        });
+    });
+
+    display("min", function(){
+        function min(list, valueSelector){
+            var result = valueSelector(list[0]);
+            for(var i=1; i<list.length; i++){
+                var value = valueSelector(list[i]);
+                if (result > value)
+                    result = value;
+            }
+            return result;
+        }
+
+        console.log("Minimum Proudct Id = ", min(products, function(p){ return p.id;}));
+        console.log("Minimum Proudct Cost = ", min(products, function(p){ return p.cost;}));
+    })
 });
 /*
 
@@ -157,9 +234,8 @@ min
 max
 sum
 aggregate
-countBy
-any
-all
-groupBy
+
+
 */
 
+//underscorejs.org

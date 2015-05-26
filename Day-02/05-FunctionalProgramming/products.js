@@ -227,6 +227,18 @@ display("Functional Programming", function(){
         console.log("Minimum Proudct Id = ", min(products, function(p){ return p.id;}));
         console.log("Minimum Proudct Cost = ", min(products, function(p){ return p.cost;}));
     })
+
+    display("aggregate", function(){
+        function aggregate(list, aggregator, seed){
+            var result = seed;
+            for(var i=0; i<list.length; i++){
+                result = aggregator(result, list[i]);
+            }
+            return result;
+        }
+        var sumOfUnits = aggregate(products, function(seed, product){ return seed + product.units; }, 0);
+        console.log("Sum of units = ", sumOfUnits);
+    });
 });
 /*
 

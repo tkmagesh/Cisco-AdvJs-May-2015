@@ -80,6 +80,42 @@ display("Functional Programming", function(){
 
         });
     });
+    display("Filter", function(){
+       display("Default [ cost > 50 ]", function(){
+           function filter(){
+               var result = [];
+               for(var i=0; i<products.length; i++){
+                   var product = products[i];
+                   if (product.cost > 50)
+                       result.push(product);
+               }
+               return result;
+           }
+           var costlyProducts = filter();
+           console.table(costlyProducts);
+       });
+       display("Refined filter", function(){
+           function filter(list, criteriaFn){
+               var result = [];
+               for(var i=0; i<list.length; i++){
+                   var item = list[i];
+                   if (criteriaFn(item))
+                       result.push(item);
+               }
+               return result;
+           }
+           display("Costly Products [cost > 50]", function(){
+                var costlyProductCriteria = function(product){ return product.cost > 50; };
+                var costlyProducts = filter(products, costlyProductCriteria);
+                console.table(costlyProducts);
+            });
+           display("All categor-1 products", function(){
+               var category1Criteria = function(product){ return product.category === 1; };
+               var allCategory1Products = filter(products, category1Criteria);
+               console.table(allCategory1Products);
+           });
+       });
+    });
 });
 /*
 sort
